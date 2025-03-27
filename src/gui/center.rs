@@ -40,15 +40,18 @@ fn tab_button(
             });
         })
         .style(move |s| {
-            s.justify_center()
-                .border_left(1)
-                .border_right(1)
-                .padding_horiz(20)
-                .hover(|s| s.height_full().cursor(CursorStyle::Pointer))
+            s.padding_horiz(20)
+                .hover(|s| s.height_full().cursor(CursorStyle::Pointer)
+            )
         }), 
         label(move ||"X")))
         .style(move |s| 
-            s.height(TABBAR_HEIGHT - CONTENT_PADDING)
+            s
+            .justify_center()
+            .padding_horiz(10)
+            .height(TABBAR_HEIGHT - CONTENT_PADDING)
+            .border_left(1)
+            .border_right(1)
             .apply_if(
             active_tab.get()
                 == tabs
@@ -57,9 +60,10 @@ fn tab_button(
                     .position(|it| *it == this_tab)
                     .unwrap(),
             |s| s
-            .border_bottom(2)
+            .border_bottom(4)
             .border_bottom_color(SECONDARY)
-        ))
+        )
+    )
 }
 
 const TABBAR_HEIGHT: f64 = 35.0;
@@ -93,7 +97,7 @@ pub fn center() -> impl IntoView {
                 |it| *it,
                 |it| container(label(move || format!("{}", it))),
             )
-            .style(|s| s.padding_bottom(10.0)),
+            .style(|s| s.padding(5.0)),
         )
         .style(|s| s.flex_col().flex_basis(0).min_width(0).flex_grow(1.0)),
     )
