@@ -1,5 +1,8 @@
 use floem::{
-    reactive::*, style::{CursorStyle, Position}, views::{container, h_stack, label, scroll, stack, tab, v_stack, Decorators}, IntoView
+    IntoView,
+    reactive::*,
+    style::{CursorStyle, Position},
+    views::{Decorators, container, h_stack, label, scroll, stack, tab, v_stack},
 };
 
 use crate::common::theme::*;
@@ -28,42 +31,40 @@ fn tab_button(
     set_active_tab: WriteSignal<usize>,
     active_tab: ReadSignal<usize>,
 ) -> impl IntoView {
-    stack((label(move || this_tab)
-        .keyboard_navigable()
-        .on_click_stop(move |_| {
-            set_active_tab.update(|v: &mut usize| {
-                *v = tabs
-                    .get_untracked()
-                    .iter()
-                    .position(|it| *it == this_tab)
-                    .unwrap();
-            });
-        })
-        .style(move |s| {
-            s.padding_horiz(20)
-                .hover(|s| s.height_full().cursor(CursorStyle::Pointer)
-            )
-        }), 
-        label(move ||"X")))
-        .style(move |s| 
-            s
-            .justify_center()
+    stack((
+        label(move || this_tab)
+            .keyboard_navigable()
+            .on_click_stop(move |_| {
+                set_active_tab.update(|v: &mut usize| {
+                    *v = tabs
+                        .get_untracked()
+                        .iter()
+                        .position(|it| *it == this_tab)
+                        .unwrap();
+                });
+            })
+            .style(move |s| {
+                s.padding_horiz(20)
+                    .hover(|s| s.height_full().cursor(CursorStyle::Pointer))
+            }),
+        label(move || "X"),
+    ))
+    .style(move |s| {
+        s.justify_center()
             .padding_horiz(10)
             .height(TABBAR_HEIGHT - CONTENT_PADDING)
             .border_left(1)
             .border_right(1)
             .apply_if(
-            active_tab.get()
-                == tabs
-                    .get_untracked()
-                    .iter()
-                    .position(|it| *it == this_tab)
-                    .unwrap(),
-            |s| s
-            .border_bottom(4)
-            .border_bottom_color(SECONDARY)
-        )
-    )
+                active_tab.get()
+                    == tabs
+                        .get_untracked()
+                        .iter()
+                        .position(|it| *it == this_tab)
+                        .unwrap(),
+                |s| s.border_bottom(4).border_bottom_color(SECONDARY),
+            )
+    })
 }
 
 const TABBAR_HEIGHT: f64 = 35.0;

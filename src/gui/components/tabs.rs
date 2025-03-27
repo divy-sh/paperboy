@@ -10,47 +10,39 @@ fn sortable_item(
     stack((
         label(move || format!("Selectable item {name}"))
             .style(|s| s.padding(5).width_full().selectable(false)),
-        "drag me".style(|s| {
-            s.selectable(false)
-                .padding(2)
-        }),
+        "drag me".style(|s| s.selectable(false).padding(2)),
     ))
-        .draggable()
-        .on_event(floem::event::EventListener::DragStart, move |_| {
-            dragger_id.set(item_id);
-            floem::event::EventPropagation::Continue
-        })
-        .on_event(floem::event::EventListener::DragOver, move |_| {
-            if dragger_id.get_untracked() != item_id {
-                let dragger_pos = sortable_items
-                    .get()
-                    .iter()
-                    .position(|id| *id == dragger_id.get_untracked())
-                    .unwrap();
-                let hover_pos = sortable_items
-                    .get()
-                    .iter()
-                    .position(|id| *id == item_id)
-                    .unwrap();
+    .draggable()
+    .on_event(floem::event::EventListener::DragStart, move |_| {
+        dragger_id.set(item_id);
+        floem::event::EventPropagation::Continue
+    })
+    .on_event(floem::event::EventListener::DragOver, move |_| {
+        if dragger_id.get_untracked() != item_id {
+            let dragger_pos = sortable_items
+                .get()
+                .iter()
+                .position(|id| *id == dragger_id.get_untracked())
+                .unwrap();
+            let hover_pos = sortable_items
+                .get()
+                .iter()
+                .position(|id| *id == item_id)
+                .unwrap();
 
-                sortable_items.update(|items| {
-                    items.remove(dragger_pos);
-                    items.insert(hover_pos, dragger_id.get_untracked());
-                });
-            }
-            floem::event::EventPropagation::Continue
-        })
-        .dragging_style(|s| {
-            s.box_shadow_blur(3)
-                .box_shadow_color(Color::from_rgb8(100, 100, 100))
-                .box_shadow_spread(2)
-        })
-        .style(move |s| {
-            s
-                .selectable(false)
-                .col_gap(10)
-                .items_center()
-        })
+            sortable_items.update(|items| {
+                items.remove(dragger_pos);
+                items.insert(hover_pos, dragger_id.get_untracked());
+            });
+        }
+        floem::event::EventPropagation::Continue
+    })
+    .dragging_style(|s| {
+        s.box_shadow_blur(3)
+            .box_shadow_color(Color::from_rgb8(100, 100, 100))
+            .box_shadow_spread(2)
+    })
+    .style(move |s| s.selectable(false).col_gap(10).items_center())
 }
 
 pub fn draggable_view() -> DynStack<usize> {
