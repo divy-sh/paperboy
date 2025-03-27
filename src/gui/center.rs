@@ -1,6 +1,8 @@
 use floem::{
-    prelude::palette::css::{BLACK, GRAY, SLATE_GRAY}, reactive::{create_signal, ReadSignal, SignalGet, SignalUpdate, WriteSignal}, style::{CursorStyle, Position}, views::{button, container, h_stack, label, scroll, stack, tab, v_stack, Decorators}, IntoView
+    reactive::*, style::{CursorStyle, Position}, views::{container, h_stack, label, scroll, stack, tab, v_stack, Decorators}, IntoView
 };
+
+use crate::common::theme::*;
 struct Center {}
 
 #[derive(Clone, Copy, Eq, Hash, PartialEq)]
@@ -56,7 +58,7 @@ fn tab_button(
                     .unwrap(),
             |s| s
             .border_bottom(2)
-            .border_bottom_color(SLATE_GRAY)
+            .border_bottom_color(SECONDARY)
         ))
 }
 
