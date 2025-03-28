@@ -1,5 +1,5 @@
 use super::components::tabs;
-use floem::{peniko::color, prelude::*};
+use floem::prelude::*;
 
 struct Sidebar {
     requests: String,

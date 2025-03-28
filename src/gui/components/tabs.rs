@@ -1,5 +1,7 @@
 use floem::prelude::*;
 
+use crate::common::theme::SECONDARY_BG;
+
 fn sortable_item(
     name: &str,
     sortable_items: RwSignal<Vec<usize>>,
@@ -13,11 +15,10 @@ fn sortable_item(
         "drag me".style(|s| s.selectable(false).padding(2)),
     ))
     .draggable()
-    .on_event(floem::event::EventListener::DragStart, move |_| {
+    .on_event_stop(floem::event::EventListener::DragStart, move |_| {
         dragger_id.set(item_id);
-        floem::event::EventPropagation::Continue
     })
-    .on_event(floem::event::EventListener::DragOver, move |_| {
+    .on_event_stop(floem::event::EventListener::DragOver, move |_| {
         if dragger_id.get_untracked() != item_id {
             let dragger_pos = sortable_items
                 .get()
@@ -35,14 +36,13 @@ fn sortable_item(
                 items.insert(hover_pos, dragger_id.get_untracked());
             });
         }
-        floem::event::EventPropagation::Continue
     })
     .dragging_style(|s| {
         s.box_shadow_blur(3)
             .box_shadow_color(Color::from_rgb8(100, 100, 100))
             .box_shadow_spread(2)
     })
-    .style(move |s| s.selectable(false).col_gap(10).items_center())
+    .style(move |s| s.selectable(false).col_gap(10).padding(20).items_center().hover(move |s| s.background(SECONDARY_BG)))
 }
 
 pub fn draggable_view() -> DynStack<usize> {

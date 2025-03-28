@@ -1,10 +1,7 @@
 use floem::{Application, kurbo::Size, style::Style, views::Decorators, window::WindowConfig};
 use paperboy::common::theme;
-use paperboy::gui::launch_gui::create;
-use paperboy::handlers::rest_handler;
-
-#[tokio::main]
-async fn main() {
+use paperboy::gui::app::create;
+fn main() {
     let theme = Style::new()
         .background(theme::PRIMARY_BG)
         .color(theme::PRIMARY);

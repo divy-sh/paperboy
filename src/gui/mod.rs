@@ -1,4 +1,4 @@
-pub mod launch_gui;
+pub mod app;
 
 mod center;
 mod components;
